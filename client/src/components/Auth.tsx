@@ -78,7 +78,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     <div className="bg-white min-h-screen flex flex-col items-center">
       {loading ? (
         <div className=' h-screen flex items-center justify-center'>
-          <Lottie options={defaultOptionss} height={400} width={700} />
+          <Lottie options={defaultOptionss} height={700} width={700} />
         </div>
       ) : (
         <>
@@ -141,13 +141,13 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
               Link to Login ➡️
             </Link>
           ) : (
-            <div className='flex justify-between'>
-              <Link to="/register" className='text-black pt-6 text-3xl justify-start left-0'>
-                Link to Registration ➡️
-              </Link>
-              <Link to="/forget" className='text-black pt-6 text-3xl justify-start left-0'>
-                Link to Forget Password ➡️
-              </Link>
+            <div className="flex justify-between space-x-4">
+            <Link to="/register" className="text-black pt-6 text-3xl">
+              Link to Registration ➡️
+            </Link>
+            <Link to="/forget" className="text-black pt-6 text-3xl">
+              Link to Forget Password ➡️
+            </Link>
             </div>
           )}
         </>
