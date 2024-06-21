@@ -76,8 +76,9 @@ const Post: React.FC<PostProps> = ({ post }) => {
         throw new Error('Failed to post comment');
       }
 
-      setComments([...comments, response.data]);
       setCommentText('');
+      // Refresh the page to update the comments
+      window.location.reload();
     } catch (error) {
       console.error('Error posting comment:', error);
     }
