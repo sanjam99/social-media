@@ -144,13 +144,20 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
             </div>
           </div>
           {!isLogin ? (
+            <>
             <Link to="/login" className='text-black pt-6 text-3xl justify-start left-0'>
               Link to Login ➡️
             </Link>
+          </>
           ) : (
+            <div className='flex justify-between'>
             <Link to="/register" className='text-black pt-6 text-3xl justify-start left-0'>
               Link to Registration ➡️
             </Link>
+            <Link to="/forget" className='text-black pt-6 text-3xl justify-start left-0'>
+            Link to Forget Password ➡️
+          </Link>
+          </div>
           )}
         </>
       )}

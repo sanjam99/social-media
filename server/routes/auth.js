@@ -41,10 +41,32 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Forgot Password (Dummy Implementation)
-router.post('/forgot-password', async (req, res) => {
-    // Implementation depends on the specific method you want to use (e.g., email reset link)
-    res.status(200).json({ message: 'Password reset link sent' });
-});
 
+router.post('/forgot-password', async (req, res) => {
+    const { email, newPassword } = req.body;
+  
+    try {
+      let user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Generate salt and hash password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+  
+      // Update user's password
+      user.password = hashedPassword;
+  
+      // Save updated user
+      await user.save();
+  
+      res.status(200).json({ message: 'Password reset successful' });
+  
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      res.status(500).json({ message: 'Failed to reset password' });
+    }
+  });
 module.exports = router;
