@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 interface NewPostFormProps {
   onPostCreated: () => void; // Callback function to update parent component
@@ -13,14 +12,23 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onPostCreated }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/posts`, { text }, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
+        body: JSON.stringify({ text }),
       });
 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
       // Assuming the API returns the newly created post object
-      console.log('New post created:', response.data);
+      console.log('New post created:', data);
       setText(''); // Clear form input
       onPostCreated(); // Notify parent component to refresh posts
     } catch (error) {
