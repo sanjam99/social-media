@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.lottie-container {
+    background: none;
+  }
+  
+  @media (max-width: 1024px) {
+    .lottie-container {
+      display: none;
+    }
+  }
