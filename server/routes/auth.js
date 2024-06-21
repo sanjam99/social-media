@@ -42,7 +42,7 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.post('/forgot-password', async (req, res) => {
+router.post('/forgotpassword', async (req, res) => {
     const { email, newPassword } = req.body;
   
     try {

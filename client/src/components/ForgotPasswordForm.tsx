@@ -5,19 +5,28 @@ const ForgotPasswordForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false); // State to manage loading state
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
+    setLoading(true);
+  
     try {
-      const response = await axios.post('/api/forgot-password', { email, newPassword });
-      setMessage(response.data.message);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/forgotpassword`, { email, newPassword });
+      setMessage(response.data.message); // Assuming your backend sends a message on success
       setEmail('');
       setNewPassword('');
-    } catch (error) {
-      console.error('Error resetting password:', error);
-      setMessage('Failed to reset password. Please try again.');
+    } catch (error:any) {
+      if (error.response && error.response.status === 404) {
+        setMessage('Password reset endpoint not found. Please try again later.');
+      } else {
+        console.error('Error resetting password:', error);
+        setMessage('Failed to reset password. Please try again.');
+      }
     }
+  
+    setLoading(false);
   };
 
   return (
@@ -49,7 +58,7 @@ const ForgotPasswordForm: React.FC = () => {
         </div>
         <div>
           <button type="submit" className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Reset Password
+            {loading ? 'Loading...' : 'Reset Password'}
           </button>
         </div>
         {message && <p className="text-red-500">{message}</p>}
