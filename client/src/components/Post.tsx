@@ -108,7 +108,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           required
         />
         <button type="submit" className="px-3 py-2 mt-2 text-white bg-blue-500 rounded">
-          Post Comment
+          Post Comments
         </button>
       </form>
 
