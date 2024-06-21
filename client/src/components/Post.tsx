@@ -56,7 +56,9 @@ const Post: React.FC<PostProps> = ({ post }) => {
     }
   };
 
-  const handleCommentSubmit = async () => {
+  const handleCommentSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
     try {
       const token = localStorage.getItem('token');
       if (!token) {
