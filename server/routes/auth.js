@@ -48,7 +48,7 @@ router.post('/forgotpassword', async (req, res) => {
       let user = await User.findOne({ email });
   
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(402).json({ message: 'User not found' });
       }
   
       // Generate salt and hash password

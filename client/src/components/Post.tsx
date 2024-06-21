@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 interface PostProps {
   post: {
@@ -50,14 +49,22 @@ const Post: React.FC<PostProps> = ({ post }) => {
   const handleLike = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}/like`, {}, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}/like`, {
+        method: 'PATCH',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
       });
 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
       // Assuming the API returns the updated likes array
-      setLikes(response.data.likes);
+      setLikes(data.likes);
     } catch (error) {
       console.error('Error liking post:', error);
     }
@@ -68,14 +75,22 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}/comment`, { text: commentText }, {
+      const response = await fetch(`/api/posts/${post._id}/comment`, {
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
+        body: JSON.stringify({ text: commentText }),
       });
 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const newComment = await response.json();
+
       // Assuming the API returns the new comment object
-      const newComment = response.data;
       setComments([...comments, newComment]);
       setCommentText(''); // Clear comment text input after submission
     } catch (error) {
