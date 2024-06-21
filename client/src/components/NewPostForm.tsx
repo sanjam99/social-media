@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import apiService from '../services/apiService'; // Import apiService instead of directly using fetch
 
 interface NewPostFormProps {
   onPostCreated: () => void; // Callback function to update parent component
@@ -16,23 +17,14 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onPostCreated }) => {
         throw new Error('Authorization token is missing');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
-        method: 'POST',
+      const response = await apiService.post('/api/posts', { text }, {
         headers: {
-          'Content-Type': 'json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ text }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
       // Assuming the API returns the newly created post object
-      console.log('New post created:', data);
+      console.log('New post created:', response.data);
       setText(''); // Clear form input
       onPostCreated(); // Notify parent component to refresh posts
     } catch (error) {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link } from 'react-router-dom';
+import apiService from '../services/apiService'; // Import apiService instead of axios
 import Post from './Post';
 import NewPostForm from './NewPostForm';
-import { Post as PostType } from '../models/Post'; // Import Post interface
+import { Post as PostType } from '../models/Post';
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -11,7 +11,7 @@ const Posts: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<PostType[]>(`${import.meta.env.VITE_API_URL}/api/posts`);
+        const { data } = await apiService.get<PostType[]>('/api/posts');
         setPosts(data);
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -23,7 +23,7 @@ const Posts: React.FC = () => {
 
   const handlePostCreated = async () => {
     try {
-      const { data } = await axios.get<PostType[]>(`${import.meta.env.VITE_API_URL}/api/posts`);
+      const { data } = await apiService.get<PostType[]>('/api/posts');
       setPosts(data); // Fetch posts after new post is created
     } catch (error) {
       console.error('Error fetching posts after creation:', error);

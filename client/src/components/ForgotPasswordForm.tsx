@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiService from '../services/apiService'; // Import apiService instead of axios
 
 const ForgotPasswordForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,11 +9,10 @@ const ForgotPasswordForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
     setLoading(true);
-  
+
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/forgotpassword`, { email, newPassword });
+      const response = await apiService.post('/api/forgotpassword', { email, newPassword });
       setMessage(response.data.message); // Assuming your backend sends a message on success
       setEmail('');
       setNewPassword('');
@@ -25,7 +24,7 @@ const ForgotPasswordForm: React.FC = () => {
         setMessage('Failed to reset password. Please try again.');
       }
     }
-  
+
     setLoading(false);
   };
 

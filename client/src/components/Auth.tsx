@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import animationData from '../assets/Animation - 1716365345627 (1).json';
 import LoadingAnimation from '../assets/Animation - 1716467974900 (1).json'; // Correct import path
-import { Link, useNavigate } from 'react-router-dom';
+import apiService from '../services/apiService'; // Import apiService
 
 interface AuthProps {
   isLogin: boolean;
@@ -25,7 +25,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     const payload = isLogin ? { username, password } : { username, email, password };
 
     try {
-      const { data } = await axios.post(url, payload);
+      const { data } = await apiService.post(url, payload);
       setMessage(data.message);
       if (isLogin) {
         localStorage.setItem('token', data.token);
@@ -53,6 +53,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
       preserveAspectRatio: 'xMidYMid slice',
     },
   };
+
   const defaultOptionss = {
     loop: true,
     autoplay: true,
@@ -77,11 +78,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     <div className="bg-white min-h-screen flex flex-col items-center">
       {loading ? (
         <div className=' h-screen flex items-center justify-center'>
-          <Lottie
-                options={defaultOptionss}
-                height={400}
-                width={700}
-              />
+          <Lottie options={defaultOptionss} height={400} width={700} />
         </div>
       ) : (
         <>
@@ -136,28 +133,22 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
               className="lottie-container p-6 justify-center items-center"
               style={isMobile ? lottieContainerResponsiveStyle : lottieContainerStyle}
             >
-              <Lottie
-                options={defaultOptions}
-                height={400}
-                width={700}
-              />
+              <Lottie options={defaultOptions} height={400} width={700} />
             </div>
           </div>
           {!isLogin ? (
-            <>
             <Link to="/" className='text-black pt-6 text-3xl justify-start left-0'>
               Link to Login ➡️
             </Link>
-          </>
           ) : (
             <div className='flex justify-between'>
-            <Link to="/register" className='text-black pt-6 text-3xl justify-start left-0'>
-              Link to Registration ➡️
-            </Link>
-            <Link to="/forget" className='text-black pt-6 text-3xl justify-start left-0'>
-            Link to Forget Password ➡️
-          </Link>
-          </div>
+              <Link to="/register" className='text-black pt-6 text-3xl justify-start left-0'>
+                Link to Registration ➡️
+              </Link>
+              <Link to="/forget" className='text-black pt-6 text-3xl justify-start left-0'>
+                Link to Forget Password ➡️
+              </Link>
+            </div>
           )}
         </>
       )}

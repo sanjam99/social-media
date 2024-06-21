@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import apiService from '../services/apiService'; // Import apiService instead of directly using fetch
 
 interface PostProps {
   post: {
@@ -35,36 +36,28 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
   // useEffect to refresh the page when comments state changes
   useEffect(() => {
-    const refreshPage = () => {
-      window.location.reload();
-    };
-
     setComments(post.comments); // Update comments state initially
-    // Listen for changes in comments state
-    if (comments !== post.comments) {
-      refreshPage();
-    }
-  }, [comments]);
+  }, [post.comments]);
 
   const handleLike = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}/like`, {
-        method: 'PATCH',
+      if (!token) {
+        throw new Error('Authorization token is missing');
+      }
+
+      const response = await apiService.patch(`/api/posts/${post._id}/like`, {}, {
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (!response.data || !response.data.likes) {
+        throw new Error('Failed to update likes');
       }
 
-      const data = await response.json();
-
       // Assuming the API returns the updated likes array
-      setLikes(data.likes);
+      setLikes(response.data.likes);
     } catch (error) {
       console.error('Error liking post:', error);
     }
@@ -75,23 +68,23 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/posts/${post._id}/comment`, {
-        method: 'POST',
+      if (!token) {
+        throw new Error('Authorization token is missing');
+      }
+
+      const response = await apiService.post(`/api/posts/${post._id}/comment`, { text: commentText }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ text: commentText }),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (!response.data) {
+        throw new Error('Failed to post comment');
       }
 
-      const newComment = await response.json();
-
       // Assuming the API returns the new comment object
-      setComments([...comments, newComment]);
+      setComments([...comments, response.data]);
       setCommentText(''); // Clear comment text input after submission
     } catch (error) {
       console.error('Error posting comment:', error);
