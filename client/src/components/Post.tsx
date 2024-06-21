@@ -27,16 +27,10 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({ post }) => {
   const [likes, setLikes] = useState<string[]>(post.likes);
   const [commentText, setCommentText] = useState<string>('');
-  const [comments, setComments] = useState<{
-    _id: string;
-    text: string;
-    user: { _id: string; username: string };
-    createdAt: string;
-  }[]>(post.comments);
+  const [comments, setComments] = useState(post.comments);
 
-  // useEffect to refresh the page when comments state changes
   useEffect(() => {
-    setComments(post.comments); // Update comments state initially
+    setComments(post.comments);
   }, [post.comments]);
 
   const handleLike = async () => {
@@ -56,7 +50,6 @@ const Post: React.FC<PostProps> = ({ post }) => {
         throw new Error('Failed to update likes');
       }
 
-      // Assuming the API returns the updated likes array
       setLikes(response.data.likes);
     } catch (error) {
       console.error('Error liking post:', error);
@@ -83,9 +76,8 @@ const Post: React.FC<PostProps> = ({ post }) => {
         throw new Error('Failed to post comment');
       }
 
-      // Assuming the API returns the new comment object
       setComments([...comments, response.data]);
-      setCommentText(''); // Clear comment text input after submission
+      setCommentText('');
     } catch (error) {
       console.error('Error posting comment:', error);
     }
@@ -116,7 +108,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           required
         />
         <button type="submit" className="px-3 py-2 mt-2 text-white bg-blue-500 rounded">
-          Post Comments
+          Post Comment
         </button>
       </form>
 
