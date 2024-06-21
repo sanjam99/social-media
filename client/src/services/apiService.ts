@@ -1,5 +1,3 @@
-// services/apiService.ts
-
 import axios from 'axios';
 
 const baseURL = 'https://social-media-h2sk.onrender.com'; // Adjust this to your backend URL

@@ -42,13 +42,14 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/forgotpassword', async (req, res) => {
-    const { email, newPassword } = req.body;
-  
-    try {
+  const { email, newPassword } = req.body;
+  // console.log("hell o there!")
+
+  try {
       let user = await User.findOne({ email });
   
       if (!user) {
-        return res.status(402).json({ message: 'User not found' });
+          return res.status(404).json({ message: 'User not found' });
       }
   
       // Generate salt and hash password
@@ -63,9 +64,11 @@ router.post('/forgotpassword', async (req, res) => {
   
       res.status(200).json({ message: 'Password reset successful' });
   
-    } catch (error) {
+  } catch (error) {
       console.error('Error resetting password:', error);
       res.status(500).json({ message: 'Failed to reset password' });
-    }
-  });
+  }
+});
+
+
 module.exports = router;
