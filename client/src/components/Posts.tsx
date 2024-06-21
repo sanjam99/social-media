@@ -36,7 +36,7 @@ const Posts: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4">
       <div className="flex justify-between items-center my-4">
         <h1 className="text-2xl font-bold">Posts</h1>
         <Link to="/" onClick={handleLogout} className="px-3 py-2 bg-red-500 text-white rounded">
