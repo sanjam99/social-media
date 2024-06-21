@@ -12,6 +12,10 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onPostCreated }) => {
 
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authorization token is missing');
+      }
+
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
         method: 'POST',
         headers: {
@@ -22,7 +26,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onPostCreated }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
