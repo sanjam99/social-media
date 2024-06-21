@@ -13,7 +13,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onPostCreated }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/posts', { text }, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/posts`, { text }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
