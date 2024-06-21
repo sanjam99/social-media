@@ -12,7 +12,7 @@ const ForgotPasswordForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await apiService.post('/api/forgotpassword', { email, newPassword });
+      const response = await apiService.post('/api/auth/forgotpassword', { email, newPassword });
       setMessage(response.data.message); // Assuming your backend sends a message on success
       setEmail('');
       setNewPassword('');
