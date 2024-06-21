@@ -42,7 +42,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
       const response = await apiService.patch(`/api/posts/${post._id}/like`, {}, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -56,9 +56,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
     }
   };
 
-  const handleCommentSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleCommentSubmit = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -68,7 +66,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
       const response = await apiService.post(`/api/posts/${post._id}/comment`, { text: commentText }, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -76,8 +74,9 @@ const Post: React.FC<PostProps> = ({ post }) => {
         throw new Error('Failed to post comment');
       }
 
-      setComments(prevComments => [...prevComments, response.data]);
-      setCommentText('');
+      // Update comments state directly with the new comment
+      setComments((prevComments) => [...prevComments, response.data]);
+      setCommentText(''); // Clear comment text input after submission
     } catch (error) {
       console.error('Error posting comment:', error);
     }
@@ -90,7 +89,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
       <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2">Comments</h3>
-        {comments.map(comment => (
+        {comments.map((comment) => (
           <div key={comment._id} className="bg-gray-100 rounded p-2 mb-2">
             <p>{comment.text}</p>
             <p className="text-xs text-gray-500">Comment by: {comment.user.username}</p>
