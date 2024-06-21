@@ -11,7 +11,7 @@ const Posts: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get<PostType[]>('/api/posts');
+        const { data } = await axios.get<PostType[]>(`${import.meta.env.VITE_API_URL}/api/posts`);
         setPosts(data);
       } catch (error) {
         console.error('Error fetching posts:', error);
