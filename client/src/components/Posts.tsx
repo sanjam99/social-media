@@ -8,26 +8,21 @@ import { Post as PostType } from '../models/Post';
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await apiService.get<PostType[]>('/api/posts');
-        setPosts(data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+  const fetchPosts = async () => {
+    try {
+      const { data } = await apiService.get<PostType[]>('/api/posts');
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
-    fetchData(); // Call fetchData immediately when component mounts
+  useEffect(() => {
+    fetchPosts(); // Call fetchPosts immediately when component mounts
   }, []);
 
   const handlePostCreated = async () => {
-    try {
-      const { data } = await apiService.get<PostType[]>('/api/posts');
-      setPosts(data); // Fetch posts after new post is created
-    } catch (error) {
-      console.error('Error fetching posts after creation:', error);
-    }
+    fetchPosts(); // Fetch posts after new post is created
   };
 
   const handleLogout = () => {
@@ -45,7 +40,7 @@ const Posts: React.FC = () => {
       </div>
       <NewPostForm onPostCreated={handlePostCreated} />
       {posts.map((post) => (
-        <Post key={post._id} post={post} />
+        <Post key={post._id} post={post} onRefreshPosts={fetchPosts} />
       ))}
     </div>
   );

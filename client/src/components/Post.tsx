@@ -22,9 +22,10 @@ interface PostProps {
     createdAt: string;
     updatedAt: string;
   };
+  onRefreshPosts: () => void; // Add this prop for refreshing posts
 }
 
-const Post: React.FC<PostProps> = ({ post }) => {
+const Post: React.FC<PostProps> = ({ post, onRefreshPosts }) => {
   const [likes, setLikes] = useState<string[]>(post.likes);
   const [commentText, setCommentText] = useState<string>('');
   const [comments, setComments] = useState(post.comments);
@@ -76,8 +77,8 @@ const Post: React.FC<PostProps> = ({ post }) => {
         throw new Error('Failed to post comment');
       }
 
-      // Update comments state directly with the new comment
-      setComments((prevComments) => [...prevComments, response.data]);
+      // Call the refresh posts function passed as a prop
+      onRefreshPosts();
       setCommentText(''); // Clear comment text input after submission
     } catch (error) {
       console.error('Error posting comment:', error);
