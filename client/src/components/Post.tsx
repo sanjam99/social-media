@@ -50,7 +50,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
   const handleLike = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.patch(`/api/posts/${post._id}/like`, {}, {
+      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}/like`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`/api/posts/${post._id}/comment`, { text: commentText }, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/posts/${post._id}/comment`, { text: commentText }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
