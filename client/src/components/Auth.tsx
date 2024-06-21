@@ -29,10 +29,10 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
       setMessage(data.message);
       if (isLogin) {
         localStorage.setItem('token', data.token);
-        navigate('/');  // Redirect to home after successful login
+        navigate('/home');  // Redirect to home after successful login
       } else {
         setMessage('Registration successful. Please login.');
-        navigate('/login');  // Redirect to login after successful registration
+        navigate('/');  // Redirect to login after successful registration
       }
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -145,7 +145,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
           </div>
           {!isLogin ? (
             <>
-            <Link to="/login" className='text-black pt-6 text-3xl justify-start left-0'>
+            <Link to="/" className='text-black pt-6 text-3xl justify-start left-0'>
               Link to Login ➡️
             </Link>
           </>
