@@ -23,7 +23,7 @@ const Posts: React.FC = () => {
 
   const handlePostCreated = async () => {
     try {
-      const { data } = await axios.get<PostType[]>('/api/posts');
+      const { data } = await axios.get<PostType[]>(`${import.meta.env.VITE_API_URL}/api/posts`);
       setPosts(data); // Fetch posts after new post is created
     } catch (error) {
       console.error('Error fetching posts after creation:', error);
